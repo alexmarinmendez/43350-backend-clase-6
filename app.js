@@ -12,6 +12,12 @@ const user = {
     title: 'Title 1'
 }
 
+const users = [
+    { id: 1, name: 'Alex', age: 45 },
+    { id: 2, name: 'Susana Oria', age: 25 },
+    { id: 3, name: 'Zoila Baca', age: 35 },
+]
+
 const app = express()
 
 //implementación de la ruta RAIZ (http://localhost:8080/)
@@ -35,5 +41,18 @@ app.get('/cursos/:id', (request, response) => {
 app.get('/user', (request, response) => {
     response.send({ user })
 })
+
+app.get('/users', (request, response) => {
+    const id = request.query.id
+    if (!id) {
+        response.send({users}) //data onwire!
+    } else {
+        const user = users.find(item => item.id == id)
+        if (!user) return response.send({ error: 'El user no existe' })
+        response.send(user)
+    }
+})
+
+
 
 app.listen(8080, () => console.log('Server Up'))
